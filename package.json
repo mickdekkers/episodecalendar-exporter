@@ -1,0 +1,20 @@
+{
+  "name": "episodecalendar-exporter",
+  "version": "0.1.0",
+  "license": "MIT",
+  "scripts": {
+    "fmt": "prettier --write --list-different --no-semi --single-quote \"index.js\" || true"
+  },
+  "dependencies": {
+    "debug": "^3.0.1",
+    "filesize": "^3.5.10",
+    "lowdb": "^1.0.0",
+    "node-fetch": "^1.7.3",
+    "progress-stream": "^2.0.0",
+    "puppeteer": "^0.10.2"
+  },
+  "devDependencies": {
+    "prettier": "^1.6.1"
+  },
+  "private": true
+}
