@@ -2,6 +2,8 @@
 
 Requires Node.js 7.6 or later.
 
+![demo gif](https://puu.sh/xzz8B/2f834c08e8.gif)
+
 ## Currently not published on npm
 To use episodecalendar-exporter:
 ```bash
