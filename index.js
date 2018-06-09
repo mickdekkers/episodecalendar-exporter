@@ -130,7 +130,7 @@ const downloadUserData = async sessionCookie => {
 /**
  * The main function
  */
-const run = async () => {
+const main = async () => {
   debugEpcal('reading user from env')
   const user = {
     email: process.env.EPCAL_EMAIL,
@@ -158,4 +158,4 @@ const run = async () => {
 }
 
 debugEpcal('starting')
-run()
+main()
