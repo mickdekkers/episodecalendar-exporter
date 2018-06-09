@@ -75,7 +75,7 @@ const login = async (db, user) => {
   // Read session cookie
   debugLogin('reading session cookie')
   const sessionCookie = (await page.cookies()).find(
-    x => x.name === '_episodecalendar_session'
+    x => x.name === '_episodecalendar_session',
   )
 
   // Close browser
@@ -95,8 +95,8 @@ const downloadUserData = async sessionCookie => {
   debugDown('requesting data')
   const res = await fetch('https://episodecalendar.com/en/export_data/json', {
     headers: {
-      Cookie: stringifyCookie(sessionCookie)
-    }
+      Cookie: stringifyCookie(sessionCookie),
+    },
   })
 
   // TODO: proper error handling
@@ -110,14 +110,14 @@ const downloadUserData = async sessionCookie => {
 
   const progress = progressStream({
     length: res.size,
-    time: 100
+    time: 100,
   })
 
   progress.on('progress', p => {
     debugDown(
       `download progress: ${filesize(p.transferred)}/?? @ ${filesize(
-        p.speed
-      )}/s`
+        p.speed,
+      )}/s`,
     )
   })
 
@@ -135,7 +135,7 @@ const run = async () => {
   const user = {
     email: process.env.EPCAL_EMAIL,
     // Obligatory note that base64 is not a secure encoding for password storage
-    password: new Buffer(process.env.EPCAL_PASS, 'base64').toString('utf8')
+    password: new Buffer(process.env.EPCAL_PASS, 'base64').toString('utf8'),
   }
 
   debugEpcal('connecting to db')

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "fmt": "prettier --write --list-different --no-semi --single-quote \"index.js\" || true"
+    "fmt": "prettier --write \"**/*.js\""
   },
   "dependencies": {
     "debug": "^3.0.1",
@@ -14,7 +14,7 @@
     "puppeteer": "^0.10.2"
   },
   "devDependencies": {
-    "prettier": "^1.6.1"
+    "prettier": "^1.13.5"
   },
   "private": true
 }
