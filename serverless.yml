@@ -1,0 +1,25 @@
+service:
+  name: epcal-exporter
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: eu-west-1
+  memorySize: 512
+  timeout: 30
+  apiKeys:
+    - http_test
+
+functions:
+  export:
+    handler: src/index.handler
+    events:
+      - http:
+          method: get
+          path: /export
+          cors: true
+          private: true

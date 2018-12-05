@@ -3,18 +3,37 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "fmt": "prettier --write \"**/*.js\""
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "fmt": "prettier --write \"**/*.{js,ts,json,yaml,yml}\"",
+    "deploy": "PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 sls deploy"
   },
   "dependencies": {
+    "@serverless-chrome/lambda": "^1.0.0-55",
     "debug": "^3.0.1",
     "filesize": "^3.5.10",
     "lowdb": "^1.0.0",
-    "node-fetch": "^1.7.3",
+    "node-fetch": "^2.3.0",
     "progress-stream": "^2.0.0",
-    "puppeteer": "^0.10.2"
+    "puppeteer": "^1.11.0"
   },
   "devDependencies": {
-    "prettier": "^1.13.5"
+    "@types/aws-lambda": "^8.10.15",
+    "@types/debug": "^0.0.31",
+    "@types/filesize": "^3.6.0",
+    "@types/lowdb": "^1.0.6",
+    "@types/node": "^10.12.12",
+    "@types/node-fetch": "^2.1.4",
+    "@types/puppeteer": "^1.10.2",
+    "chrome-launcher": "^0.10.5",
+    "dotenv-webpack": "^1.5.7",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.13.5",
+    "serverless-offline": "^3.31.3",
+    "serverless-webpack": "^5.2.0",
+    "source-map-support": "^0.5.9",
+    "ts-loader": "^5.3.1",
+    "typescript": "^3.2.1",
+    "webpack": "^4.27.0"
   },
   "private": true
 }
