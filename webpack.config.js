@@ -25,6 +25,7 @@ module.exports = {
   module: {
     rules: [{test: /\.tsx?$/, loader: 'ts-loader'}],
   },
+  // TODO: don't do this in prod, or maybe filter
   plugins: [new Dotenv()],
   externals: ['@serverless-chrome/lambda'],
 };

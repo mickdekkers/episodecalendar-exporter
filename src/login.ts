@@ -1,7 +1,7 @@
 import debug from 'debug';
 import * as puppeteer from 'puppeteer';
 import {getBrowser} from './browser';
-import {click} from './utils';
+import {click, isOffline} from './utils';
 
 const log = debug('epcal:login');
 
@@ -17,7 +17,7 @@ export const login = async (user: {
   // Launch browser
   log('launching browser');
   const {browser, shutdown} = await getBrowser({
-    slowMo: process.env.IS_OFFLINE ? 100 : 0,
+    slowMo: isOffline ? 100 : 0,
   });
 
   try {

@@ -3,6 +3,7 @@ service:
 
 plugins:
   - serverless-webpack
+  - serverless-s3-local
   - serverless-offline
 
 provider:
@@ -14,12 +15,27 @@ provider:
   apiKeys:
     - http_test
 
+custom:
+  s3:
+    host: localhost
+    port: 3214
+    directory: .s3
+
+resources:
+  Resources:
+    EpisodeCalendarBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: epcal
+
 functions:
   export:
     handler: src/index.handler
     events:
       - http:
           method: get
-          path: /export
           cors: true
           private: true
+    environment:
+      EPISODECALENDAR_EMAIL: ${ssm:episodecalendarEmail}
+      EPISODECALENDAR_PASSWORD: ${ssm:episodecalendarPassword}

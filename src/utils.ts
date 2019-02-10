@@ -28,3 +28,5 @@ export const click = async (
     throw error;
   }
 };
+
+export const isOffline = Boolean(process.env.IS_OFFLINE);

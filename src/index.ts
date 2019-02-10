@@ -8,13 +8,20 @@ import low from 'lowdb';
 const log = debug('epcal:main');
 
 export const doExport = async (): Promise<void> => {
-  log('reading user from env');
-  // TODO: get this in some better way
+  log('starting');
+
+  log('reading user credentials from env');
   const user = {
-    email: process.env.EPCAL_EMAIL,
-    // Obligatory note that base64 is not a secure encoding for password storage
-    password: new Buffer(process.env.EPCAL_PASS, 'base64').toString('utf8'),
+    email: process.env.EPISODECALENDAR_EMAIL,
+    password: process.env.EPISODECALENDAR_PASSWORD,
   };
+
+  if (typeof user.email !== 'string' || user.email.length === 0) {
+    throw new Error('user email is missing');
+  }
+  if (typeof user.password !== 'string' || user.password.length === 0) {
+    throw new Error('user password is missing');
+  }
 
   log('connecting to db');
   const db = await low(new FileAsync('db.json'));
@@ -22,19 +29,20 @@ export const doExport = async (): Promise<void> => {
   log('connected to db');
 
   // TODO: handle expired session
-  let sessionCookie = null; // await db.get('sessionCookie').value();
+  // let sessionCookie = null;
+  let sessionCookie = await db.get('sessionCookie').value();
   if (sessionCookie == null) {
     log('no session cookie, logging in');
     sessionCookie = await login(user);
     log('writing session cookie to db');
     // TODO: store this in some better place
-    // await db.set('sessionCookie', sessionCookie).write();
+    await db.set('sessionCookie', sessionCookie).write();
   }
 
   log('session cookie retrieved');
   log('downloading user data');
 
-  // await download(sessionCookie);
+  await download(sessionCookie);
 
   log('done');
 };
@@ -56,10 +64,9 @@ export const handler: APIGatewayProxyHandler = async (
       body: error.toString(),
     };
   }
+
   return {
     statusCode: 200,
     body: '',
   };
 };
-
-log('starting');

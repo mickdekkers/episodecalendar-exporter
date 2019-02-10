@@ -1,25 +1,11 @@
 import debug from 'debug';
 import filesize from 'filesize';
-import * as fs from 'fs';
 import fetch from 'node-fetch';
 import progressStream from 'progress-stream';
 import * as puppeteer from 'puppeteer';
+import {getS3} from './s3';
 
 const log = debug('epcal:download');
-
-/**
- * Create a Promise that resolves when a stream ends
- * or rejects when an error occurs
- * @param stream
- */
-const streamCompletion = (
-  stream: NodeJS.ReadableStream | NodeJS.WritableStream,
-): Promise<void> =>
-  new Promise((resolve, reject) => {
-    stream.on('end', resolve);
-    stream.on('finish', resolve);
-    stream.on('error', reject);
-  });
 
 /**
  * Simple helper function that converts a cookie object to a name=value string
@@ -33,6 +19,8 @@ const stringifyCookie = ({name, value}: puppeteer.Cookie): string =>
 export const download = async (
   sessionCookie: puppeteer.Cookie,
 ): Promise<void> => {
+  const s3 = getS3();
+
   log('requesting data');
   const res = await fetch('https://episodecalendar.com/en/export_data/json', {
     headers: {
@@ -40,30 +28,35 @@ export const download = async (
     },
   });
 
-  // TODO: proper error handling
+  // TODO: implement proper error handling
   if (res.status !== 200) {
     throw new Error(`Unexpected response code ${res.status}`);
   }
 
   log(`connection established (${res.status}), downloading data`);
 
-  const file = fs.createWriteStream('user-data.json');
+  // const progress = progressStream({
+  //   length: res.size,
+  //   time: 100,
+  // });
 
-  const progress = progressStream({
-    length: res.size,
-    time: 100,
-  });
-
-  progress.on('progress', (p) => {
-    log(
-      `download progress: ${filesize(p.transferred)}/?? @ ${filesize(
-        p.speed,
-      )}/s`,
-    );
-  });
+  // progress.on('progress', (p) => {
+  //   log(
+  //     `download progress: ${filesize(p.transferred)}/?? @ ${filesize(
+  //       p.speed,
+  //     )}/s`,
+  //   );
+  // });
 
   // TODO: streamed json formatting
-  await streamCompletion(res.body.pipe(progress).pipe(file));
+  await s3
+    .upload({
+      Bucket: 'epcal',
+      Key: 'exports/export.json',
+      Body: await res.text(),
+      ContentType: 'application/json',
+    })
+    .promise();
 
   log('download complete');
 };
