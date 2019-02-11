@@ -6,12 +6,13 @@
     "fmt": "prettier --write \"**/*.js\""
   },
   "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
     "debug": "^3.0.1",
     "filesize": "^3.5.10",
-    "lowdb": "^1.0.0",
-    "node-fetch": "^1.7.3",
+    "form-urlencoded": "^3.0.0",
+    "node-fetch": "^2.3.0",
     "progress-stream": "^2.0.0",
-    "puppeteer": "^0.10.2"
+    "set-cookie-parser": "^2.3.5"
   },
   "devDependencies": {
     "prettier": "^1.13.5"
