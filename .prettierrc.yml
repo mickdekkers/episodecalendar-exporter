@@ -3,6 +3,6 @@ printWidth: 80
 tabWidth: 2
 bracketSpacing: true
 trailingComma: all
-semi: false
+semi: true
 singleQuote: true
-arrowParens: avoid
+arrowParens: always

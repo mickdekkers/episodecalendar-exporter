@@ -1,0 +1,7 @@
+linters:
+  '*.{ts,js,json,yaml,yml,md}':
+    - prettier --write
+    - git add
+  'package.json':
+    - sort-package-json
+    - git add
