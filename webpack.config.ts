@@ -19,6 +19,7 @@ const config: Configuration = {
     libraryTarget: 'commonjs2',
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
+    devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]',
   },
   module: {
     rules: [{ test: /\.ts$/, loader: 'ts-loader' }],
