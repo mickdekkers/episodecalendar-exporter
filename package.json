@@ -18,8 +18,11 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "debug": "^3.0.1",
+    "fecha": "^3.0.2",
     "filesize": "^3.5.10",
     "form-urlencoded": "^3.0.0",
+    "keyv": "^3.1.0",
+    "keyv-file": "^0.1.11",
     "node-fetch": "^2.3.0",
     "progress-stream": "^2.0.0",
     "set-cookie-parser": "^2.3.5"
@@ -29,8 +32,10 @@
     "@types/clean-webpack-plugin": "^0.1.2",
     "@types/debug": "^4.1.1",
     "@types/dotenv-webpack": "^1.7.0",
+    "@types/fecha": "^2.3.1",
     "@types/filesize": "^4.0.1",
     "@types/form-urlencoded": "^2.0.0",
+    "@types/keyv": "^3.1.0",
     "@types/node-fetch": "^2.1.6",
     "@types/webpack": "^4.4.24",
     "@types/webpack-node-externals": "^1.6.3",

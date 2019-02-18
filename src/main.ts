@@ -28,7 +28,7 @@ const main = async (): Promise<void> => {
     );
   }
 
-  log('no session cookie, logging in');
+  log('authenticating');
   const sessionCookie = await authenticate(user as User);
   log('session cookie retrieved');
 
