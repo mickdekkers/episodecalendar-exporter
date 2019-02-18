@@ -88,5 +88,8 @@ dist/
 .env
 
 # Exported user data
-user-data.csv
-user-data.json
+user-data*.csv
+user-data*.json
+
+# Cookie cache
+cookie-cache.json

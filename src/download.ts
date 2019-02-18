@@ -4,6 +4,7 @@ import filesize from 'filesize';
 import progressStream from 'progress-stream';
 import { streamCompletion } from './util/stream';
 import { logger } from './util/logger';
+import fecha from 'fecha';
 
 const log = logger('epcal:download');
 
@@ -24,9 +25,18 @@ export const exportData = async (sessionCookie: string): Promise<void> => {
     throw new Error(`download failed: unexpected status code ${res.status}`);
   }
 
-  log(`connection established (${res.status}), downloading data export`);
+  const filename = `user-data-${fecha.format(
+    new Date(),
+    'YYYY-MM-DD--HH-mm-ss',
+  )}.csv`;
 
-  const file = fs.createWriteStream('user-data.csv');
+  log(
+    `connection established (${
+      res.status
+    }), downloading data export to ${filename}`,
+  );
+
+  const file = fs.createWriteStream(filename);
 
   const progress = progressStream({
     length: res.size,

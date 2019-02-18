@@ -10,20 +10,58 @@ import {
 } from './const';
 import { User } from './types/user';
 import { logger } from './util/logger';
+import crypto from 'crypto';
+import Keyv from 'keyv';
+import KeyvFile from 'keyv-file';
 
 const log = logger('epcal:auth');
+
+const keyv = new Keyv({
+  store: new KeyvFile({
+    filename: 'cookie-cache.json',
+    writeDelay: 0,
+  }),
+}) as Keyv<string>;
+
+// Note: this is not meant to provide any kind of security
+const getUserCacheKey = (user: User): string =>
+  crypto
+    .createHash('sha256')
+    .update(user.email + user.password)
+    .digest('hex');
+
+const cacheUserCookie = (user: User, cookie: string) =>
+  keyv.set(getUserCacheKey(user), cookie);
+
+const getCachedUserCookie = (user: User) => keyv.get(getUserCacheKey(user));
 
 /**
  * Log in to episodecalendar.com to retrieve a session cookie
  */
 export const authenticate = async (user: User): Promise<string> => {
+  log('checking if cookie is cached');
+  const cachedCookie = await getCachedUserCookie(user);
+  if (cachedCookie != null) {
+    // TODO: use cookie's expire time to set ttl for cache
+    log('cookie is cached, returning cached cookie');
+    return cachedCookie;
+  }
+
+  log('cookie is not cached');
+
   log('starting authentication process');
 
   const { authToken, sessionCookie } = await initSession();
   log('session initialized');
 
-  const _sessionCookie = login(authToken, sessionCookie, user);
+  const _sessionCookie = await login(authToken, sessionCookie, user);
   log('logged in');
+
+  log('saving cookie to cache', _sessionCookie);
+
+  await cacheUserCookie(user, _sessionCookie);
+
+  log('cookie saved to cache');
 
   return _sessionCookie;
 };
