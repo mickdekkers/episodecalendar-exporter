@@ -48,21 +48,22 @@ const login = async (db, user) => {
 
   // Go to the login page
   debugLogin('navigating to login page')
-  await page.goto('https://episodecalendar.com/en/account/sign_in')
+  await page.goto('https://episodecalendar.com/en/users/sign_in')
 
   // Enter email
   debugLogin('entering email address')
   await page.focus('input#user_email')
-  await page.type(user.email)
+  await page.type('input#user_email', user.email)
 
   // Enter password
   debugLogin('entering password')
   await page.focus('input#user_password')
-  await page.type(user.password)
+  await page.type('input#user_password', user.password)
 
-  // Click remember
-  debugLogin('clicking remember me')
-  await page.click('input#user_remember_me')
+  // // Click remember
+  // debugLogin('clicking remember me')
+  // await page.waitForSelector('input#user_remember_me')
+  // await page.('input#user_remember_me')
 
   // Click submit
   debugLogin('submitting login form')
@@ -93,7 +94,7 @@ const login = async (db, user) => {
  */
 const downloadUserData = async sessionCookie => {
   debugDown('requesting data')
-  const res = await fetch('https://episodecalendar.com/en/export_data/json', {
+  const res = await fetch('https://episodecalendar.com/en/export_data/json.json', {
     headers: {
       Cookie: stringifyCookie(sessionCookie),
     },
