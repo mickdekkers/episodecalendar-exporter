@@ -92,41 +92,17 @@ const login = async (db, user) => {
   return sessionCookie
 }
 
+
+const exportUrls = [
+  'https://episodecalendar.com/en/export_data/json.json',
+  'https://episodecalendar.com/en/export_data/csv.csv',
+  'https://episodecalendar.com/en/export_data/xml.xml'
+]
 /**
  * Download the user data json given a session cookie for authentication
  */
 const downloadUserData = async sessionCookie => {
   debugDown('requesting data')
-  const res = await fetch('https://episodecalendar.com/en/export_data/json.json', {
-    headers: {
-      Cookie: stringifyCookie(sessionCookie),
-    },
-  })
-
-  // TODO: proper error handling
-  if (res.status !== 200) {
-    throw new Error(`Unexpected response code ${res.status}`)
-  }
-
-  debugDown(`connection established (${res.status}), downloading data`)
-
-  const file = fs.createWriteStream('user-data.json')
-
-  const progress = progressStream({
-    length: res.size,
-    time: 100,
-  })
-
-  progress.on('progress', p => {
-    debugDown(
-      `download progress: ${filesize(p.transferred)}/?? @ ${filesize(
-        p.speed,
-      )}/s`,
-    )
-  })
-
-  // TODO: streamed json formatting
-  await streamCompletion(res.body.pipe(progress).pipe(file))
 
   await Promise.all(exportUrls.map(async url => {
     debugDown('getting ' + url)
@@ -154,6 +130,7 @@ const downloadUserData = async sessionCookie => {
     }
 
     const file = fs.createWriteStream(filePath)
+    debugDown(`connection established (${res.status}), downloading data`)
   
     const progress = progressStream({
       length: res.size,
