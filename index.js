@@ -48,7 +48,7 @@ const login = async (db, user) => {
 
   // Go to the login page
   debugLogin('navigating to login page')
-  await page.goto('https://episodecalendar.com/en/users/sign_in')
+  await page.goto('https://episodecalendar.com/users/sign_in')
 
   // Enter email
   debugLogin('entering email address')
@@ -61,9 +61,11 @@ const login = async (db, user) => {
   await page.type('input#user_password', user.password)
 
   // // Click remember
-  // debugLogin('clicking remember me')
-  // await page.waitForSelector('input#user_remember_me')
-  // await page.('input#user_remember_me')
+  debugLogin('clicking remember me')
+  await page.evaluate(() => {
+    document.querySelector('input[type=hidden]:nth-child(1)').value = 1
+    return
+  })
 
   // Click submit
   debugLogin('submitting login form')
